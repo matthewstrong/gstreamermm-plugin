@@ -1,6 +1,8 @@
 #ifndef TESTS_PLUGINS_DERIVEDFROMBASETRANSFORM_H_
 #define TESTS_PLUGINS_DERIVEDFROMBASETRANSFORM_H_
 
+#include <gst/gst.h>
+#include <glibmm.h>
 #include <gstreamermm.h>
 // #include <gstreamermm/basetransform.h>
 #include <gstreamermm/private/basetransform_p.h>
@@ -9,26 +11,19 @@
 class DerivedFromBaseTransform : public Gst::BaseTransform
 {
 public:
-  static void class_init(Gst::ElementClass<DerivedFromBaseTransform> *klass)
-  {
-    klass->set_metadata("derivedfrombasetransform_longname",
-          "derivedfrombasetransform_classification", "derivedfrombasetransform_detail_description", "derivedfrombasetransform_detail_author");
+    static void class_init(Gst::ElementClass<DerivedFromBaseTransform> *klass);
+    explicit DerivedFromBaseTransform(GstBaseTransform *gobj);
 
-    klass->add_pad_template(Gst::PadTemplate::create("sink", Gst::PAD_SINK, Gst::PAD_ALWAYS, Gst::Caps::create_any()));
-    klass->add_pad_template(Gst::PadTemplate::create("src", Gst::PAD_SRC, Gst::PAD_ALWAYS, Gst::Caps::create_any()));
-  }
+    Gst::FlowReturn
+    transform_ip_vfunc(const Glib::RefPtr<Gst::Buffer>& buf);
 
-  explicit DerivedFromBaseTransform(GstBaseTransform *gobj)
-  : Glib::ObjectBase(typeid (DerivedFromBaseTransform)), // type must be registered before use
-    Gst::BaseTransform(gobj)
-  {
-    set_passthrough(true);
-  }
+    Glib::PropertyProxy<int>
+    property_test() { return prop_test.get_proxy(); }
 
-  static bool register_element(Glib::RefPtr<Gst::Plugin> plugin)
-  {
-    return Gst::ElementFactory::register_element(plugin, "derivedfrombasetransform", 10, Gst::register_mm_type<DerivedFromBaseTransform>("derivedfrombasetransform"));
-  }
+    static bool register_element(Glib::RefPtr<Gst::Plugin> plugin);
+
+private:
+    Glib::Property<int> prop_test;
 };
 
 #endif /* TESTS_PLUGINS_DERIVEDFROMBASETRANSFORM_H_ */
