@@ -1,4 +1,4 @@
-#include "TestPlugin.h"
+#include "TestCppElement.h"
 
 void
 DerivedFromBaseTransform::class_init(Gst::ElementClass<DerivedFromBaseTransform> *klass)

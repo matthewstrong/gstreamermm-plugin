@@ -1,5 +1,5 @@
 #include "GstPlugin.h"
-#include "TestPlugin.h"
+#include "TestCppElement.h"
 
 #include <gstreamermm.h>
 #include <gstreamermm/private/pluginfeature_p.h>
